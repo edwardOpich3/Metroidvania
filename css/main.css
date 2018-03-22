@@ -1,0 +1,31 @@
+/*
+    main.css
+    Written by Edward Opich
+    Last modified 3/2/18
+*/
+
+body
+{
+    text-align: center;
+}
+
+canvas
+{
+    background: #000;
+}
+
+#audioControls
+{
+    display: none;
+}
+
+#instructions
+{
+    margin: 0 auto;
+    /*border: 1px solid black;*/
+}
+
+#instructions section p
+{
+    text-align: left;
+}
