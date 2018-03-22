@@ -19,7 +19,6 @@ app.main = {
     classes: undefined,
     graphics: undefined,
     game: undefined,
-    level: undefined,
 
     // Functions
     init: function(){

@@ -32,6 +32,7 @@ app.game = (function(){
     game.init = function(){
         // Init any special objects!
         this.player.init();
+        this.level.init();
 
         // Define the level object!
         // TODO: Consider moving this to its own script, for consistency

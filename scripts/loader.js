@@ -10,7 +10,6 @@ var app = app || {};
 window.onload = function(){
     // Initialize any secondary modules!
     app.graphics.init();
-    app.level.init();
     app.game.init();
 
     // Hook up secondary modules to the main module
@@ -18,7 +17,6 @@ window.onload = function(){
     app.main.classes = app.classes;
     app.main.graphics = app.graphics;
     app.main.game = app.game;
-    app.main.level = app.level;
 
     // Initialize the main app!
     app.main.init();

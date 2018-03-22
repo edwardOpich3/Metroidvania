@@ -28,14 +28,11 @@ app.game.level = (function(){
     };
 
     level.init = function(){
-        level.requestTileLayout("data/levels/0.bin");
-        loadImagesWithCallback(["media/tiles/1.png", "media/tiles/2.png"], function(images){
-            level.tileSet = images;
-            console.log("images loaded");
-        });
+        this.load("data/levels/0.bin");
+        this.loadTileset();
     };
 
-    this.level.draw = function(ctx){
+    level.draw = function(ctx){
         if(this.loaded == false || this.tileSet == undefined){
             return;
         }
@@ -111,5 +108,5 @@ app.game.level = (function(){
         this.loaded = false;
     };
 
-    return level;
+    return Object.seal(level);
 }());
