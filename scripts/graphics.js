@@ -1,7 +1,7 @@
 // graphics.js
 // This file contains functions and variables relating to graphics.
 // Written by Edward Opich
-// Last modified 3/13/18
+// Last modified 3/22/18
 
 "use strict";
 
@@ -43,6 +43,7 @@ app.graphics = (function(){
         this.buffer.height = this.HEIGHT;
         this.bufferCtx = this.buffer.getContext("2d");
         this.bufferCtx.imageSmoothingEnabled = false;
+        //this.bufferCtx.globalCompositeOperation = "destination-over";
     };
 
     // Draw everything in the render queue
@@ -52,7 +53,7 @@ app.graphics = (function(){
         this.bufferCtx.clearRect(0, 0, this.WIDTH, this.HEIGHT);
 
         // Draw everything in the render queue, in order!
-        for(var i = 0; i < this.renderQueue.length; i++){
+        while(this.renderQueue.length > 0){
             this.drawFromRenderQueue();
         }
 

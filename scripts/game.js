@@ -1,7 +1,7 @@
 // game.js
 // This file contains much of the game logic.
 // Written by Edward Opich
-// Last modified 3/21/18
+// Last modified 3/22/18
 
 "use strict";
 
@@ -33,61 +33,6 @@ app.game = (function(){
         // Init any special objects!
         this.player.init();
         this.level.init();
-
-        // Define the level object!
-        // TODO: Consider moving this to its own script, for consistency
-        this.level = Object.seal({
-            tileLayout: [],
-            tileSet: undefined,
-
-            loaded: false,
-
-            draw: function(){},
-            load: function(){},
-            unload: function(){}
-        });
-
-        this.level.load = function(){
-            var transfer = function(images){
-                this.tileSet = images[0];
-                console.log("loaded tile set");
-                this.loaded = true;
-            };
-
-            loadImagesWithCallback(["media/tileSet.png"], transfer.bind(this));
-
-
-        };
-
-        this.level.unload = function(){
-            tileLayout = undefined;
-            this.loaded = false;
-        };
-
-        this.level.draw = function(ctx){
-            if(this.loaded == false || this.tileSet == undefined){
-                return;
-            }
-
-            for(var i = 0; i < this.tileLayout.length; i++){
-                for(var j = 0; j < this.tileLayout[i].length; j++){
-
-                    ctx.drawImage(this.tileSet,                                     // Image
-                        (this.tileLayout[i][j] * 32) % this.tileSet.width,               // Source X
-                        Math.floor(this.tileLayout[i][j] / (this.tileSet.height / 32)),  // Source Y
-                        32,                                                         // Source W
-                        32,                                                         // Source H
-                        i * 32,                                                     // Dest X
-                        j * 32,                                                     // Dest Y
-                        32,                                                         // Dest W
-                        32);                                                        // Dest H
-
-                }
-            }
-        };
-
-        // Load everything that needs to be!
-        this.level.load();
     };
 
     // Update objects
@@ -103,7 +48,7 @@ app.game = (function(){
 
     // Add all appropriate objects to the render queue!
     game.draw = function(){
-        //app.main.graphics.addToRenderQueue(this.level);
+        app.main.graphics.addToRenderQueue(this.level);
         app.main.graphics.addToRenderQueue(this.player);
     };
 

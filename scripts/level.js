@@ -1,7 +1,7 @@
 // level.js
 // Used for loading rooms from external data.
 // Written by Edward Opich
-// Last modified 3/21/18
+// Last modified 3/22/18
 
 "use strict";
 
@@ -28,7 +28,7 @@ app.game.level = (function(){
     };
 
     level.init = function(){
-        this.load("data/levels/0.bin");
+        this.load("data/levels/1.bin");
         this.loadTileset();
     };
 
@@ -92,6 +92,7 @@ app.game.level = (function(){
             }
 
             level.loaded = true;
+            console.log("Loaded level");
         };
 
         // Open a "get" request from url, and make it asynchronous
