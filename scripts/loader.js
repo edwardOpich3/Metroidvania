@@ -1,22 +1,25 @@
 // loader.js
 // This file handles window events, such as onload.
 // Written by Edward Opich
-// Last modified 3/20/18
+// Last modified 3/23/18
 
 "use strict";
 
 var app = app || {};
 
 window.onload = function(){
-    // Initialize any secondary modules!
-    app.graphics.init();
-    app.game.init();
-
     // Hook up secondary modules to the main module
     app.main.userInput = app.userInput;
     app.main.classes = app.classes;
     app.main.graphics = app.graphics;
+
     app.main.game = app.game;
+    app.main.game.player = app.player;
+    app.main.game.level = app.level;
+
+    // Initialize any secondary modules!
+    app.graphics.init();
+    app.game.init();
 
     // Initialize the main app!
     app.main.init();

@@ -1,16 +1,13 @@
 // level.js
 // Used for loading rooms from external data.
 // Written by Edward Opich
-// Last modified 3/22/18
+// Last modified 3/23/18
 
 "use strict";
 
 var app = app || {};
 
-app.game = app.game || {};
-
-// TODO: Convert this to a sub-module called "level" of app.game!
-app.game.level = (function(){
+app.level = (function(){
     var level = {
         tileLayout: [],
         tileSet: undefined,
@@ -45,8 +42,8 @@ app.game.level = (function(){
                     Math.floor(this.tileLayout[i][j] / (this.tileSet.height / 32)),  // Source Y
                     32,                                                         // Source W
                     32,                                                         // Source H
-                    i * 32,                                                     // Dest X
-                    j * 32,                                                     // Dest Y
+                    j * 32,                                                     // Dest X
+                    i * 32,                                                     // Dest Y
                     32,                                                         // Dest W
                     32);                                                        // Dest H
 

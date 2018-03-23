@@ -1,7 +1,7 @@
 // classes.js
 // This file contains various useful classes.
 // Written by Edward Opich
-// Last modified 3/21/18
+// Last modified 3/23/18
 
 "use strict";
 
@@ -56,7 +56,9 @@ app.classes = (function(){
 
     // Game Object class
     var GameObject = function(image = undefined, bbox = new BBox()){
-        this.bbox = bbox;
+        this.position = new Vector2();
+
+        this.bbox = bbox;   // BBox origin is relative to object position
         this.image = image;
 
         this.velocity = new Vector2();
@@ -67,6 +69,8 @@ app.classes = (function(){
         this.gravity = new Vector2(0, 1);
         this.friction = -0.3;
 
+        this.grounded = false;
+
         this.init = function(){};
         this.update = function(){};
         this.draw = function(){};
@@ -75,34 +79,14 @@ app.classes = (function(){
         this.unload = function(){};
 
         Object.defineProperties(this, {
-            "position": {
-                "get": function() { return this.bbox.origin; },
-                "set": function(value) { this.bbox.origin = value; }
-            },
-
             "x": {
-                "get": function() { return this.bbox.origin.x; },
-                "set": function(value) { this.bbox.origin.x = value; }
+                "get": function() { return this.position.x; },
+                "set": function(value) { this.position.x = value; }
             },
 
             "y": {
-                "get": function() { return this.bbox.origin.y; },
-                "set": function(value) { this.bbox.origin.y = value; }
-            },
-
-            "size": {
-                "get": function() { return this.bbox.size; },
-                "set": function(value) { this.bbox.size = value; }
-            },
-
-            "w": {
-                "get": function() { return this.bbox.size.x; },
-                "set": function(value) { this.bbox.size.x = value; }
-            },
-
-            "h": {
-                "get": function() { return this.bbox.size.y; },
-                "set": function(value) { this.bbox.size.y = value; }
+                "get": function() { return this.position.y; },
+                "set": function(value) { this.position.y = value; }
             }
         });
     };
