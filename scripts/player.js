@@ -69,101 +69,6 @@ app.player = (function(){
         // Apply gravity to our current acceleration
         this.acceleration.add(this.gravity);
 
-        // For now, we have a hard-coded floor.
-        // TODO: Replace this with collision code for floor tiles!
-        /*if(this.position.y >= app.graphics.HEIGHT / 2){
-            if(this.acceleration.y > 0){
-                this.acceleration.y = 0;
-            }
-
-            if(this.velocity.y > 0){
-                this.velocity.y = 0;
-            }
-
-            this.position.y = app.graphics.HEIGHT / 2;
-        }*/
-
-        // Tile collision detection!
-        // TODO: Implement spatial optimization!
-        this.grounded = false;
-        if(app.level.loaded){
-
-            // Current row; fancy math added to ensure we only check tiles we intersect
-            for(var i = Math.max(Math.floor((this.y + this.bbox.y) / 32), 0);
-            i < Math.min(Math.floor((this.y + this.bbox.y + this.bbox.h) / 32) + 1, app.level.tileLayout.length);
-            i++){
-
-                // Current column
-                for(var j = Math.max(Math.floor((this.x + this.bbox.x) / 32), 0);
-                j < Math.min(Math.floor((this.x + this.bbox.x + this.bbox.w) / 32) + 1, app.level.tileLayout[i].length);
-                j++){
-
-                    // The tile is air, don't bother checking collision with it
-                    if(app.level.tileLayout[i][j] == 0){
-                        continue;
-                    }
-
-                    // Otherwise, we are most *certainly* colliding with it. Adjust accordingly!
-
-                    // If the hor. center is to the left of the player's, push the player right!
-                    if((j * 32) + 16 < player.x + player.bbox.x + (player.bbox.w / 2)
-                        && player.velocity.x < 0){
-                        player.x = ((j + 1) * 32) - player.bbox.x;
-
-                        if(player.acceleration.x < 0){
-                            player.acceleration.x = 0;
-                        }
-
-                        if(player.velocity.x < 0){
-                            player.velocity.x = 0;
-                        }
-                    }
-
-                    // If the hor. center is to the right of the player's, push the player left!
-                    else if(player.velocity.x > 0){
-                        player.x = (j * 32) - (player.bbox.w + player.bbox.x);
-
-                        if(player.acceleration.x > 0){
-                            player.acceleration.x = 0;
-                        }
-
-                        if(player.velocity.x > 0){
-                            player.velocity.x = 0;
-                        }
-                    }
-
-                    // If the vert. center is above the player's, push the player down!
-                    if((i * 32) + 16 < player.y + player.bbox.y + (player.bbox.h / 2)
-                        && player.velocity.y < 0){
-                        player.y = ((i + 1) * 32) - player.bbox.y;
-                        
-                        if(player.acceleration.y < 0){
-                            player.acceleration.y = 0;
-                        }
-
-                        if(player.velocity.y < 0){
-                            player.velocity.y = 0;
-                        }
-                    }
-
-                    // If the vert. center is below the player's, push the player up!
-                    else if(player.velocity.y > 0){
-                        player.y = (i * 32) - (player.bbox.h + player.bbox.y);
-
-                        if(player.acceleration.y < 0){
-                            player.acceleration.y = 0;
-                        }
-
-                        if(player.velocity.y > 0){
-                            player.velocity.y = 0;
-                        }
-
-                        this.grounded = true;
-                    }
-                }
-            }
-        }
-
         // Apply friction
         if(this.velocity.x > 0){
             this.velocity.x += this.friction;
@@ -193,6 +98,99 @@ app.player = (function(){
         }
         else if(this.velocity.y < -this.maxVelocity.y){
             this.velocity.y = -this.maxVelocity.y;
+        }
+
+        // Tile collision detection!
+        this.grounded = false;
+        if(app.level.loaded){
+
+            // Which rows of tiles are located at the player's projected top and bottom?
+            var topIndex = Math.floor((this.y + this.bbox.y + this.velocity.y) / 32);
+            var bottomIndex = Math.floor((this.y + this.bbox.y + this.bbox.h + this.velocity.y) / 32);
+
+            // Detect ceilings and floors!
+            for(var i = Math.floor((this.x + this.bbox.x + this.velocity.x + 1) / 32);
+            i < Math.floor((this.x + this.bbox.x + this.bbox.w + this.velocity.x - 1) / 32) + 1;
+            i++){
+                // Make sure we don't check out-of-bounds!
+                if(i < 0){
+                    continue;
+                }
+                else if(i > app.level.tileLayout[0].length){
+                    break;
+                }
+
+                // Ceilings
+                if(this.velocity.y < 0 && topIndex >= 0 && topIndex < app.level.tileLayout.length){
+                    if(app.level.tileLayout[topIndex][i] != 0){
+                        this.velocity.y = 0;
+
+                        if(this.acceleration.y < 0){
+                            this.acceleration.y = 0;
+                        }
+
+                        this.y = ((topIndex + 1) * 32) + (this.bbox.y);
+                    }
+                }
+
+                // Floors
+                if(this.velocity.y > 0 && bottomIndex >= 0 && bottomIndex < app.level.tileLayout.length){
+                    if(app.level.tileLayout[bottomIndex][i] != 0){
+                        this.velocity.y = 0;
+
+                        if(this.acceleration.y > 0){
+                            this.acceleration.y = 0;
+                        }
+
+                        this.y = (bottomIndex * 32) - (this.bbox.y + this.bbox.h);
+
+                        this.grounded = true;
+                    }
+                }
+            }
+
+            // Which columns of tiles are located at the player's projected left and right?
+            var leftIndex = Math.floor((this.x + this.bbox.x + this.velocity.x) / 32);
+            var rightIndex = Math.floor((this.x + this.bbox.x + this.bbox.w + this.velocity.x) / 32);
+
+            // Detect walls!
+            for(var i = Math.floor((this.y + this.bbox.y + this.velocity.y + 1) / 32);
+            i < Math.floor((this.y + this.bbox.y + this.bbox.h + this.velocity.y - 1) / 32) + 1;
+            i++){
+                // Make sure we don't check out-of-bounds!
+                if(i < 0){
+                    continue;
+                }
+                else if(i > app.level.tileLayout.length){
+                    break;
+                }
+
+                // Left walls
+                if(this.velocity.x < 0 && leftIndex >= 0 && leftIndex < app.level.tileLayout[0].length){
+                    if(app.level.tileLayout[i][leftIndex] != 0){
+                        this.velocity.x = 0;
+                        
+                        if(this.acceleration.x < 0){
+                            this.acceleration.x = 0;
+                        }
+
+                        this.x = ((leftIndex + 1) * 32) - (this.bbox.x);
+                    }
+                }
+
+                // Right walls
+                if(this.velocity.x > 0 && rightIndex >= 0 && rightIndex < app.level.tileLayout[0].length){
+                    if(app.level.tileLayout[i][rightIndex] != 0){
+                        this.velocity.x = 0;
+
+                        if(this.acceleration.x > 0){
+                            this.acceleration.x = 0;
+                        }
+
+                        this.x = (rightIndex * 32) - (this.bbox.x + this.bbox.w);
+                    }
+                }
+            }
         }
 
         // Add our velocity to our position
