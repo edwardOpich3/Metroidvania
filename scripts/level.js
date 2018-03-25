@@ -1,7 +1,7 @@
 // level.js
 // Used for loading rooms from external data.
 // Written by Edward Opich
-// Last modified 3/23/18
+// Last modified 3/24/18
 
 "use strict";
 
@@ -14,6 +14,10 @@ app.level = (function(){
 
         loaded: false,
 
+        world: [],
+        row: 0,
+        col: 0,
+
         init: function(){},
         draw: function(){},
 
@@ -24,22 +28,26 @@ app.level = (function(){
         unloadTileset: function(){}
     };
 
+    // The world map. Contains the names of the file to load.
+    // x means non-existent; Block the player off.
+    var x = undefined;
+    level.world = [
+        [0, 1],
+        [2, x]
+    ];
+
     level.init = function(){
-        this.load("data/levels/1.bin");
+        this.load();
         this.loadTileset();
     };
 
     level.draw = function(ctx){
-        if(this.loaded == false || this.tileSet == undefined){
-            return;
-        }
-
         for(var i = 0; i < this.tileLayout.length; i++){
             for(var j = 0; j < this.tileLayout[i].length; j++){
 
                 ctx.drawImage(this.tileSet,                                     // Image
                     (this.tileLayout[i][j] * 32) % this.tileSet.width,               // Source X
-                    Math.floor(this.tileLayout[i][j] / (this.tileSet.height / 32)),  // Source Y
+                    32 * Math.floor(this.tileLayout[i][j] / (this.tileSet.width / 32)),  // Source Y
                     32,                                                         // Source W
                     32,                                                         // Source H
                     j * 32,                                                     // Dest X
@@ -65,7 +73,7 @@ app.level = (function(){
     };
     
     // Make a request for a new tile layout
-    level.load = function(url){
+    level.load = function(){
         // Make a request object!
         var xhr = new XMLHttpRequest();
 
@@ -93,7 +101,7 @@ app.level = (function(){
         };
 
         // Open a "get" request from url, and make it asynchronous
-        xhr.open("GET", url, true);
+        xhr.open("GET", "data/levels/" + this.world[this.row][this.col] + ".bin", true);
 
         // Prevent browser caching by sending a header to the server (in case your data has been changed!)
         xhr.setRequestHeader("If-Modified-Since", "Sat, 1 Jan 2010 00:00:00 GMT");

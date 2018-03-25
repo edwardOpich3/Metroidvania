@@ -1,7 +1,7 @@
 // player.js
 // Contains data having to do with the player; a sub-module of app.game
 // Written by Edward Opich
-// Last modified 3/23/18
+// Last modified 3/24/18
 
 "use strict";
 
@@ -11,7 +11,7 @@ app.player = (function(){
     var player = new app.classes.GameObject();
 
     player.init = function(){
-        this.x = app.graphics.WIDTH / 2;
+        this.x = 160;
         this.y = app.graphics.HEIGHT / 2;
 
         this.bbox.x = 20;
@@ -57,8 +57,7 @@ app.player = (function(){
         }
 
         // Jump!
-        // TODO: Figure out how to make it so jump isn't rapid-fire!
-        if(app.userInput.keysDown[app.userInput.KEYBOARD.KEY_Z]){
+        if(app.userInput.keysPressed[app.userInput.KEYBOARD.KEY_Z]){
             if(this.grounded){
                 this.acceleration.y -= 16;
             }
@@ -116,7 +115,7 @@ app.player = (function(){
                 if(i < 0){
                     continue;
                 }
-                else if(i > app.level.tileLayout[0].length){
+                else if(i >= app.level.tileLayout[0].length){
                     break;
                 }
 
@@ -161,7 +160,7 @@ app.player = (function(){
                 if(i < 0){
                     continue;
                 }
-                else if(i > app.level.tileLayout.length){
+                else if(i >= app.level.tileLayout.length){
                     break;
                 }
 
@@ -198,6 +197,47 @@ app.player = (function(){
 
         // Set our acceleration to 0!
         this.acceleration = new app.classes.Vector2();
+
+        // Detect screen change!
+        if(this.x + this.bbox.x + 1 >= app.level.tileLayout[0].length * 32){
+            this.x = 0 - (this.bbox.x + this.bbox.w - 1);
+
+            app.level.unload();
+
+            app.level.col++;
+
+            app.level.load();
+        }
+
+        else if(this.x + this.bbox.x + this.bbox.w - 1 < 0){
+            this.x = (app.level.tileLayout[0].length * 32) - (this.bbox.x + 1);
+
+            app.level.unload();
+
+            app.level.col--;
+
+            app.level.load();
+        }
+
+        if(this.y + this.bbox.y + 1 >= app.level.tileLayout.length * 32){
+            this.y = 0 - (this.bbox.y + this.bbox.h - 1);
+
+            app.level.unload();
+
+            app.level.row++;
+
+            app.level.load();
+        }
+
+        else if(this.y + this.bbox.y + this.bbox.h < 0){
+            this.y = (app.level.tileLayout.length * 32) - (this.bbox.y + 1);
+
+            app.level.unload();
+
+            app.level.row--;
+
+            app.level.load();
+        }
     };
 
     return Object.seal(player);

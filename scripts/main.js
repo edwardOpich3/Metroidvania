@@ -1,7 +1,7 @@
 // main.js
 // This file contains the outer-most structure of the application.
 // Written by Edward Opich
-// Last modified 3/20/18
+// Last modified 3/24/18
 
 "use strict";
 
@@ -30,9 +30,12 @@ app.main = {
         this.animationID = requestAnimationFrame(this.update.bind(this));
 
         this.game.update();
+        this.userInput.update();
 
-        // After all is said and done, draw the next frame!
-        this.graphics.draw();
+        // Don't draw if nothing's loaded yet!
+        if(app.level.loaded && app.level.tileSet != undefined){
+            this.graphics.draw();
+        }
     },
 
     unfocusGame: function(){
