@@ -37,6 +37,13 @@ app.level = (function(){
     ];
 
     level.init = function(){
+        if(this.loaded){
+            this.unload();
+        }
+
+        this.row = 0;
+        this.col = 0;
+
         this.load();
         this.loadTileset();
     };

@@ -129,6 +129,11 @@ app.player = (function(){
                         }
 
                         this.y = ((topIndex + 1) * 32) + (this.bbox.y);
+
+                        // We hit a spike!
+                        if(app.level.tileLayout[topIndex][i] == 2){
+                            app.game.init();
+                        }
                     }
                 }
 
@@ -144,6 +149,11 @@ app.player = (function(){
                         this.y = (bottomIndex * 32) - (this.bbox.y + this.bbox.h);
 
                         this.grounded = true;
+
+                        // We hit a spike!
+                        if(app.level.tileLayout[bottomIndex][i] == 2){
+                            app.game.init();
+                        }
                     }
                 }
             }
@@ -174,6 +184,11 @@ app.player = (function(){
                         }
 
                         this.x = ((leftIndex + 1) * 32) - (this.bbox.x);
+
+                        // We hit a spike!
+                        if(app.level.tileLayout[i][leftIndex] == 2){
+                            app.game.init();
+                        }
                     }
                 }
 
@@ -187,6 +202,11 @@ app.player = (function(){
                         }
 
                         this.x = (rightIndex * 32) - (this.bbox.x + this.bbox.w);
+
+                        // We hit a spike!
+                        if(app.level.tileLayout[i][rightIndex] == 2){
+                            app.game.init();
+                        }
                     }
                 }
             }

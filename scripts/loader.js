@@ -12,6 +12,7 @@ window.onload = function(){
     app.main.userInput = app.userInput;
     app.main.classes = app.classes;
     app.main.graphics = app.graphics;
+    app.main.sound = app.sound;
 
     app.main.game = app.game;
     app.main.game.player = app.player;
@@ -19,6 +20,7 @@ window.onload = function(){
 
     // Initialize any secondary modules!
     app.graphics.init();
+    app.sound.init();
     app.game.init();
 
     // Initialize the main app!

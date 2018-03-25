@@ -19,9 +19,12 @@ app.main = {
     classes: undefined,
     graphics: undefined,
     game: undefined,
+    sound: undefined,
 
     // Functions
     init: function(){
+        this.sound.playBGAudio();
+
         // Start the update loop!
         this.update();
     },
@@ -48,6 +51,8 @@ app.main = {
         // Cancel the animation frame to stop the update loop
         cancelAnimationFrame(this.animationID);
 
+        this.sound.stopBGAudio();
+
         console.log("game unfocused");
     },
 
@@ -60,6 +65,8 @@ app.main = {
 
         // Resume update loop
         this.update();
+
+        this.sound.playBGAudio();
 
         console.log("game refocused");
     },
