@@ -1,7 +1,7 @@
 // loader.js
 // This file handles window events, such as onload.
 // Written by Edward Opich
-// Last modified 3/23/18
+// Last modified 3/26/18
 
 "use strict";
 
@@ -20,6 +20,7 @@ window.onload = function(){
 
     // Initialize any secondary modules!
     app.graphics.init();
+    app.userInput.init();
     app.sound.init();
     app.game.init();
 

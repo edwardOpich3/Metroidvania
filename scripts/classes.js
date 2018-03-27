@@ -1,7 +1,7 @@
 // classes.js
 // This file contains various useful classes.
 // Written by Edward Opich
-// Last modified 3/23/18
+// Last modified 3/26/18
 
 "use strict";
 
@@ -19,7 +19,13 @@ app.classes = (function(){
         this.add = function(other){
             this.x += other.x;
             this.y += other.y;
-        }
+
+            return this;
+        };
+
+        this.magnitude = function(){
+            return Math.sqrt(Math.pow(this.x, 2) + Math.pow(this.y, 2));
+        };
     }
 
     // 2D Bounding Box class

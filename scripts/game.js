@@ -1,7 +1,7 @@
 // game.js
 // This file contains much of the game logic.
 // Written by Edward Opich
-// Last modified 3/22/18
+// Last modified 3/26/18
 
 "use strict";
 
@@ -23,6 +23,9 @@ app.game = (function(){
 
     game.gameState = game.GAME_STATE.TITLE;
 
+    game.deltaTime = 0;
+    game.lastTime = 0;
+
     game.player = undefined;
     game.level = undefined;
 
@@ -42,6 +45,9 @@ app.game = (function(){
 
         // Now that everything's been updated, add everything to the render queue!
         this.draw();
+
+        // Update the delta-time!
+        this.deltaTime = this.calculateDeltaTime();
     };
 
     // Private functions
@@ -50,6 +56,15 @@ app.game = (function(){
     game.draw = function(){
         app.main.graphics.addToRenderQueue(this.level);
         app.main.graphics.addToRenderQueue(this.player);
+    };
+
+    game.calculateDeltaTime = function(){
+        var now,fps;
+        now = performance.now(); 
+        fps = 1000 / (now - this.lastTime);
+        fps = clamp(fps, 12, 60);
+        this.lastTime = now; 
+        return 1/fps;
     };
 
     // Return the ones that are public!

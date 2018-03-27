@@ -1,7 +1,7 @@
 // main.js
 // This file contains the outer-most structure of the application.
 // Written by Edward Opich
-// Last modified 3/24/18
+// Last modified 3/26/18
 
 "use strict";
 

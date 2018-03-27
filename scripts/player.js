@@ -1,7 +1,7 @@
 // player.js
 // Contains data having to do with the player; a sub-module of app.game
 // Written by Edward Opich
-// Last modified 3/24/18
+// Last modified 3/26/18
 
 "use strict";
 
@@ -9,6 +9,11 @@ var app = app || {};
 
 app.player = (function(){
     var player = new app.classes.GameObject();
+
+    player.emitter = new app.Emitter();
+    player.emitter.position = new app.classes.Vector2();
+    player.emitter.velocity = new app.classes.Vector2();
+    player.emitter.movementSpeed = 5;
 
     player.init = function(){
         this.x = 160;
@@ -18,6 +23,19 @@ app.player = (function(){
         this.bbox.y = 0;
         this.bbox.w = 24;
         this.bbox.h = 64;
+
+        // Init the player's bullet / emitter!
+        this.emitter.clearParticles();
+
+        this.emitter.numParticles = 50;
+        this.emitter.useCircles = false;
+        this.emitter.useSquares = true;
+        this.emitter.red = 255;
+        this.emitter.green = 128;
+        this.emitter.minYspeed = -1;
+        this.emitter.maxYspeed = 1;
+        this.emitter.position.x = this.x + this.bbox.x + (this.bbox.w / 2);
+        this.emitter.position.y = this.y + this.bbox.y + (this.bbox.h / 2);
 
         this.load();
     };
@@ -41,6 +59,7 @@ app.player = (function(){
         }
 
         ctx.drawImage(this.image, this.x, this.y, this.image.width, this.image.height);
+        this.emitter.updateAndDraw(ctx, this.emitter.position, app.game.deltaTime);
     };
 
     player.update = function(){
@@ -49,18 +68,37 @@ app.player = (function(){
         }
 
         // User Input!
-        if(app.userInput.keysDown[app.userInput.KEYBOARD.KEY_LEFT]){
+        if(app.userInput.keysDown[app.userInput.KEYBOARD.KEY_A]){
             this.acceleration.x -= 0.5;
         }
-        if (app.userInput.keysDown[app.userInput.KEYBOARD.KEY_RIGHT]){
+        if (app.userInput.keysDown[app.userInput.KEYBOARD.KEY_D]){
             this.acceleration.x += 0.5;
         }
 
         // Jump!
-        if(app.userInput.keysPressed[app.userInput.KEYBOARD.KEY_Z]){
+        if(app.userInput.keysPressed[app.userInput.KEYBOARD.KEY_W]){
             if(this.grounded){
                 this.acceleration.y -= 16;
             }
+        }
+
+        // Shoot!
+        if(app.userInput.mouseDown){
+            this.emitter.velocity.x = app.userInput.mouse.x - (this.x + this.bbox.x + (this.bbox.w / 2));
+            this.emitter.velocity.y = app.userInput.mouse.y - (this.y + this.bbox.y + (this.bbox.h / 2));
+
+            var magnitude = this.emitter.velocity.magnitude();
+
+            this.emitter.velocity.x /= (magnitude / this.emitter.movementSpeed);
+            this.emitter.velocity.y /= (magnitude / this.emitter.movementSpeed);
+
+            this.emitter.position.x = this.x + this.bbox.x + (this.bbox.w / 2);
+            this.emitter.position.y = this.y + this.bbox.y + (this.bbox.h / 2);
+
+            // TODO: Fix this (and the other related) hacky garbage!
+            this.emitter.numParticles = 50;
+
+            this.emitter.createParticles(this.emitter.position);
         }
 
         // Calculate physics!
@@ -210,10 +248,26 @@ app.player = (function(){
                     }
                 }
             }
+
+            // Lastly, did our bullet hit anything?
+            // TODO: Fix this hacky garbage!
+            if(this.emitter.position.y < 0
+                || this.emitter.position.y >= app.level.tileLayout.length * 32
+                || this.emitter.position.x < 0
+                || this.emitter.position.x >= app.level.tileLayout[0].length * 32){
+                    this.emitter.numParticles = 0;
+                }
+
+            else if(app.level.tileLayout[Math.floor(this.emitter.position.y / 32)][Math.floor(this.emitter.position.x / 32)] != 0){
+                this.emitter.numParticles = 0;
+            }
         }
 
         // Add our velocity to our position
         this.position.add(this.velocity);
+
+        // Update our emitter's position!
+        this.emitter.position.add(this.emitter.velocity);
 
         // Set our acceleration to 0!
         this.acceleration = new app.classes.Vector2();
@@ -227,6 +281,8 @@ app.player = (function(){
             app.level.col++;
 
             app.level.load();
+
+            this.emitter.clearParticles();
         }
 
         else if(this.x + this.bbox.x + this.bbox.w - 1 < 0){
@@ -237,6 +293,8 @@ app.player = (function(){
             app.level.col--;
 
             app.level.load();
+
+            this.emitter.clearParticles();
         }
 
         if(this.y + this.bbox.y + 1 >= app.level.tileLayout.length * 32){
@@ -247,6 +305,8 @@ app.player = (function(){
             app.level.row++;
 
             app.level.load();
+
+            this.emitter.clearParticles();
         }
 
         else if(this.y + this.bbox.y + this.bbox.h < 0){
@@ -257,6 +317,8 @@ app.player = (function(){
             app.level.row--;
 
             app.level.load();
+
+            this.emitter.clearParticles();
         }
     };
 

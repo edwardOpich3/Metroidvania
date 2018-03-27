@@ -1,6 +1,6 @@
 // utilities.js
 // global utilities to be used in the project
-// Modified 3/20/18
+// Modified 3/26/18
 
 // All of these functions are in the global scope
 		
@@ -107,7 +107,6 @@ function requestFullscreen(element) {
 	}
 	// .. and do nothing if the method is not supported
 };
-
 
 // This gives Array a randomElement() method
 Array.prototype.randomElement = function(){

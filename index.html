@@ -1,7 +1,7 @@
 <!--
     index.html
     Written by Edward Opich
-    Last modified 3/25/18
+    Last modified 3/26/18
 -->
 
 <!DOCTYPE html>
@@ -23,7 +23,7 @@
 
     <!-- As the game progresses, enable each of the instructions sections one by one! -->
     <div id="instructions" style="display: flex">
-        <section id="movement" style="display: none; flex: 1">
+        <section id="movement" style="/*!display: none;*/ flex: 1">
             <h2>Basic Controls</h2>
             <p>A / D: Walk</p>
             <p>W: Jump</p>
@@ -34,8 +34,11 @@
     <script src="scripts/loader.js"></script>
     <script src="scripts/utilities.js"></script>
 
-    <script src="scripts/userInput.js"></script>
     <script src="scripts/graphics.js"></script>
+    <script src="scripts/emitter.js"></script>
+
+    <script src="scripts/userInput.js"></script>
+
     <script src="scripts/sound.js"></script>
     <script src="scripts/classes.js"></script>
 
