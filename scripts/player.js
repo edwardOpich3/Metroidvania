@@ -1,7 +1,7 @@
 // player.js
 // Contains data having to do with the player; a sub-module of app.game
 // Written by Edward Opich
-// Last modified 3/26/18
+// Last modified 3/29/18
 
 "use strict";
 
@@ -170,7 +170,7 @@ app.player = (function(){
 
                         // We hit a spike!
                         if(app.level.tileLayout[topIndex][i] == 2){
-                            app.game.init();
+                            app.game.gameState = app.game.GAME_STATE.GAME_OVER;
                         }
                     }
                 }
@@ -190,7 +190,7 @@ app.player = (function(){
 
                         // We hit a spike!
                         if(app.level.tileLayout[bottomIndex][i] == 2){
-                            app.game.init();
+                            app.game.gameState = app.game.GAME_STATE.GAME_OVER;
                         }
                     }
                 }
@@ -225,7 +225,7 @@ app.player = (function(){
 
                         // We hit a spike!
                         if(app.level.tileLayout[i][leftIndex] == 2){
-                            app.game.init();
+                            app.game.gameState = app.game.GAME_STATE.GAME_OVER;
                         }
                     }
                 }
@@ -243,7 +243,7 @@ app.player = (function(){
 
                         // We hit a spike!
                         if(app.level.tileLayout[i][rightIndex] == 2){
-                            app.game.init();
+                            app.game.gameState = app.game.GAME_STATE.GAME_OVER;
                         }
                     }
                 }
@@ -276,7 +276,7 @@ app.player = (function(){
         if(this.x + this.bbox.x + 1 >= app.level.tileLayout[0].length * 32){
             this.x = 0 - (this.bbox.x + this.bbox.w - 1);
 
-            app.level.unload();
+            //app.level.unload();
 
             app.level.col++;
 
@@ -288,7 +288,7 @@ app.player = (function(){
         else if(this.x + this.bbox.x + this.bbox.w - 1 < 0){
             this.x = (app.level.tileLayout[0].length * 32) - (this.bbox.x + 1);
 
-            app.level.unload();
+            //app.level.unload();
 
             app.level.col--;
 
@@ -300,7 +300,7 @@ app.player = (function(){
         if(this.y + this.bbox.y + 1 >= app.level.tileLayout.length * 32){
             this.y = 0 - (this.bbox.y + this.bbox.h - 1);
 
-            app.level.unload();
+            //app.level.unload();
 
             app.level.row++;
 
@@ -312,7 +312,7 @@ app.player = (function(){
         else if(this.y + this.bbox.y + this.bbox.h < 0){
             this.y = (app.level.tileLayout.length * 32) - (this.bbox.y + 1);
 
-            app.level.unload();
+            //app.level.unload();
 
             app.level.row--;
 

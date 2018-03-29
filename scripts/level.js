@@ -1,7 +1,7 @@
 // level.js
 // Used for loading rooms from external data.
 // Written by Edward Opich
-// Last modified 3/24/18
+// Last modified 3/29/18
 
 "use strict";
 
@@ -49,6 +49,10 @@ app.level = (function(){
     };
 
     level.draw = function(ctx){
+        if(this.loaded == false){
+            return;
+        }
+
         for(var i = 0; i < this.tileLayout.length; i++){
             for(var j = 0; j < this.tileLayout[i].length; j++){
 

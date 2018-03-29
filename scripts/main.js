@@ -1,7 +1,7 @@
 // main.js
 // This file contains the outer-most structure of the application.
 // Written by Edward Opich
-// Last modified 3/26/18
+// Last modified 3/29/18
 
 "use strict";
 
@@ -36,9 +36,7 @@ app.main = {
         this.userInput.update();
 
         // Don't draw if nothing's loaded yet!
-        if(app.level.loaded && app.level.tileSet != undefined){
-            this.graphics.draw();
-        }
+        this.graphics.draw();
     },
 
     unfocusGame: function(){

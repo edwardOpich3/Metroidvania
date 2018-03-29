@@ -1,7 +1,7 @@
 // graphics.js
 // This file contains functions and variables relating to graphics.
 // Written by Edward Opich
-// Last modified 3/22/18
+// Last modified 3/29/18
 
 "use strict";
 
@@ -47,7 +47,7 @@ app.graphics = (function(){
     };
 
     // Draw everything in the render queue
-    graphics.draw = function(){
+    graphics.draw = function(clear){
         // Clear the frame!
         this.ctx.clearRect(0, 0, this.WIDTH, this.HEIGHT);
         this.bufferCtx.clearRect(0, 0, this.WIDTH, this.HEIGHT);
