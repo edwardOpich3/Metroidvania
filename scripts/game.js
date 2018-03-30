@@ -1,7 +1,7 @@
 // game.js
 // This file contains much of the game logic.
 // Written by Edward Opich
-// Last modified 3/29/18
+// Last modified 3/30/18
 
 "use strict";
 
@@ -41,11 +41,13 @@ app.game = (function(){
     // Update objects
     game.update = function(){
         if(this.gameState == this.GAME_STATE.TITLE){
-            if(app.userInput.keysPressed[app.userInput.KEYBOARD.KEY_ENTER]){
+            if(app.userInput.mouseDown){
                 this.gameState = this.GAME_STATE.GAMEPLAY;
 
                 this.player.init();
                 this.level.init();
+
+                app.sound.BGM.play();
             }
         }
         else if(this.gameState == this.GAME_STATE.GAMEPLAY){
@@ -53,11 +55,13 @@ app.game = (function(){
             this.player.update();
         }
         else if(this.gameState == this.GAME_STATE.GAME_OVER){
-            if(app.userInput.keysPressed[app.userInput.KEYBOARD.KEY_ENTER]){
+            if(app.userInput.mouseDown){
                 this.gameState = this.GAME_STATE.GAMEPLAY;
 
                 this.player.init();
                 this.level.init();
+
+                app.sound.BGM.play();
             }
         }
 
@@ -78,10 +82,12 @@ app.game = (function(){
                     ctx.save();
                     ctx.fillStyle = "white";
                     ctx.textAlign = "center";
-                    ctx.font = "30px Times New Roman";
 
-                    ctx.fillText("Cool Game, Bro", app.graphics.WIDTH / 2, 64);
-                    ctx.fillText("Press 'Enter' to start!", app.graphics.WIDTH / 2, 256);
+                    ctx.font = "128px Share Tech Mono, monospace";
+                    ctx.fillText("Cool Game", app.graphics.WIDTH / 2, 128);
+
+                    ctx.font = "64px Share Tech Mono, monospace"
+                    ctx.fillText("Click the game to start!", app.graphics.WIDTH / 2, app.graphics.HEIGHT / 2);
 
                     ctx.restore();
                 }
@@ -97,10 +103,12 @@ app.game = (function(){
                     ctx.save();
                     ctx.fillStyle = "white";
                     ctx.textAlign = "center";
-                    ctx.font = "30px Times New Roman";
 
-                    ctx.fillText("Game Over, duuuude", app.graphics.WIDTH / 2, app.graphics.HEIGHT / 2);
-                    ctx.fillText("Press 'Enter' to try again, maaaan", app.graphics.WIDTH / 2, (app.graphics.HEIGHT / 2) + 64);
+                    ctx.font = "128px Share Tech Mono, monospace";
+                    ctx.fillText("Game Over!", app.graphics.WIDTH / 2, app.graphics.HEIGHT / 2);
+
+                    ctx.font = "32px Share Tech Mono, monospace"
+                    ctx.fillText("Click the game to try again", app.graphics.WIDTH / 2, (app.graphics.HEIGHT / 2) + 128);
 
                     ctx.restore();
                 }

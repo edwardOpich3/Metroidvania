@@ -1,7 +1,7 @@
 // player.js
 // Contains data having to do with the player; a sub-module of app.game
 // Written by Edward Opich
-// Last modified 3/29/18
+// Last modified 3/30/18
 
 "use strict";
 
@@ -13,7 +13,7 @@ app.player = (function(){
     player.emitter = new app.Emitter();
     player.emitter.position = new app.classes.Vector2();
     player.emitter.velocity = new app.classes.Vector2();
-    player.emitter.movementSpeed = 5;
+    player.emitter.movementSpeed = 10;
 
     player.init = function(){
         this.x = 160;
@@ -79,6 +79,8 @@ app.player = (function(){
         if(app.userInput.keysPressed[app.userInput.KEYBOARD.KEY_W]){
             if(this.grounded){
                 this.acceleration.y -= 16;
+
+                app.sound.SFX.jump.play();
             }
         }
 
@@ -99,6 +101,8 @@ app.player = (function(){
             this.emitter.numParticles = 50;
 
             this.emitter.createParticles(this.emitter.position);
+
+            app.sound.SFX.shoot.play();
         }
 
         // Calculate physics!
@@ -171,6 +175,9 @@ app.player = (function(){
                         // We hit a spike!
                         if(app.level.tileLayout[topIndex][i] == 2){
                             app.game.gameState = app.game.GAME_STATE.GAME_OVER;
+
+                            app.sound.BGM.pause();
+                            app.sound.BGM.currentTime = 0;
                         }
                     }
                 }
@@ -191,6 +198,9 @@ app.player = (function(){
                         // We hit a spike!
                         if(app.level.tileLayout[bottomIndex][i] == 2){
                             app.game.gameState = app.game.GAME_STATE.GAME_OVER;
+
+                            app.sound.BGM.pause();
+                            app.sound.BGM.currentTime = 0;
                         }
                     }
                 }
@@ -226,6 +236,9 @@ app.player = (function(){
                         // We hit a spike!
                         if(app.level.tileLayout[i][leftIndex] == 2){
                             app.game.gameState = app.game.GAME_STATE.GAME_OVER;
+
+                            app.sound.BGM.pause();
+                            app.sound.BGM.currentTime = 0;
                         }
                     }
                 }
@@ -244,6 +257,9 @@ app.player = (function(){
                         // We hit a spike!
                         if(app.level.tileLayout[i][rightIndex] == 2){
                             app.game.gameState = app.game.GAME_STATE.GAME_OVER;
+
+                            app.sound.BGM.pause();
+                            app.sound.BGM.currentTime = 0;
                         }
                     }
                 }

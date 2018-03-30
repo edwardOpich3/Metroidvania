@@ -1,7 +1,7 @@
 // sound.js
 // This file manages music and sound effects!
 // Written by Edward Opich
-// Modified 3/25/18
+// Modified 3/30/18
 "use strict";
 
 // If app exists use the existing copy
@@ -10,22 +10,29 @@ var app = app || {};
 
 // define the .sound module and immediately invoke it in an IIFE
 app.sound = (function(){
+    var sound = {};
     
-    var bgAudio = undefined;
-    var currentEffect = 0;
-    var currentDirection = 1;
-    var effectSounds = ["1.mp3", "2.mp3", "3.mp3", "4.mp3", "5.mp3", "6.mp3", "7.mp3", "8.mp3"];
+    sound.BGM = undefined;
 
-    function init(){
-        bgAudio = document.querySelector("#bgAudio");
-        bgAudio.volume = 1.00;
+    sound.SFX = {
+        jump: undefined,
+        shoot: undefined
+    };
+
+    sound.init = function(){
+        this.BGM = document.querySelector("#bgAudio");
+        this.BGM.volume = 1.00;
+
+        this.SFX.jump = document.createElement("audio");
+        this.SFX.jump.src = "media/Jump.wav";
+        this.SFX.jump.volume = 0.5;
+
+        this.SFX.shoot = document.createElement("audio");
+        this.SFX.shoot.src = "media/Shoot.wav";
+        this.SFX.shoot.volume = 0.5;
     }
 
-    function stopBGAudio(){
-        bgAudio.pause();
-    }
-
-    function playEffect(){
+    sound.playEffect = function(){
         var effectSound = document.createElement('audio');
         effectSound.volume = 0.3;
         effectSound.src = "media/" + effectSounds[currentEffect];
@@ -37,16 +44,5 @@ app.sound = (function(){
         }
     }
 
-    function playBGAudio(){
-        bgAudio.play();
-    }
-
-    // Export a public interface to this module
-    return{
-        init: init,
-        stopBGAudio: stopBGAudio,
-        playEffect: playEffect,
-        playBGAudio: playBGAudio
-    };
-	
+    return sound;
 }());

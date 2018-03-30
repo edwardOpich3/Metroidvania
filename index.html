@@ -1,7 +1,7 @@
 <!--
     index.html
     Written by Edward Opich
-    Last modified 3/29/18
+    Last modified 3/30/18
 -->
 
 <!DOCTYPE html>
@@ -14,25 +14,23 @@
 </head>
 
 <body>
-    <!-- Preloaded Images -->
-    <img id="playerImg" src="media/player.png" style="display: none" />
-
-    <canvas width="1024" height="768">
-        Your browser cannot load the canvas.
-    </canvas>
-
     <!-- As the game progresses, enable each of the instructions sections one by one! -->
     <div id="instructions" style="display: flex">
-        <section id="movement" style="/*!display: none;*/ flex: 1">
+        <section id="movement" style="flex: 1">
             <h2>Basic Controls</h2>
-            <p>A / D: Walk</p>
-            <p>W: Jump</p>
-            <p id="crouching" style="display: none">S: Crouch</p>
+            <p>Walk: A / D</p>
+            <p>Jump: W</p>
+            <p id="crouching" style="display: none">Crouch: S</p>
+        </section>
+        <section style="display: flex">
+            <canvas>
+                Your browser cannot load the canvas.
+            </canvas>
         </section>
         <section id="shooting" style="flex: 1">
             <h2>Shooting</h2>
-            <p>Mouse: Aim</p>
-            <p>Left Click: Shoot</p>
+            <p>Aim: Mouse</p>
+            <p>Shoot: Left Click</p>
         </section>
     </div>
 

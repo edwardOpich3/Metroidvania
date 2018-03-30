@@ -1,7 +1,7 @@
 // main.js
 // This file contains the outer-most structure of the application.
 // Written by Edward Opich
-// Last modified 3/29/18
+// Last modified 3/30/18
 
 "use strict";
 
@@ -23,8 +23,6 @@ app.main = {
 
     // Functions
     init: function(){
-        this.sound.playBGAudio();
-
         // Start the update loop!
         this.update();
     },
@@ -49,7 +47,9 @@ app.main = {
         // Cancel the animation frame to stop the update loop
         cancelAnimationFrame(this.animationID);
 
-        this.sound.stopBGAudio();
+        if(this.game.gameState == this.game.GAME_STATE.GAMEPLAY){
+            this.sound.BGM.pause();
+        }
 
         console.log("game unfocused");
     },
@@ -64,7 +64,9 @@ app.main = {
         // Resume update loop
         this.update();
 
-        this.sound.playBGAudio();
+        if(this.game.gameState == this.game.GAME_STATE.GAMEPLAY){
+            this.sound.BGM.play();
+        }
 
         console.log("game refocused");
     },
