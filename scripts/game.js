@@ -83,8 +83,8 @@ app.game = (function(){
                     ctx.fillStyle = "white";
                     ctx.textAlign = "center";
 
-                    ctx.font = "128px Share Tech Mono, monospace";
-                    ctx.fillText("Cool Game", app.graphics.WIDTH / 2, 128);
+                    ctx.font = "92px Share Tech Mono, monospace";
+                    ctx.fillText("An Untitled Game", app.graphics.WIDTH / 2, 128);
 
                     ctx.font = "64px Share Tech Mono, monospace"
                     ctx.fillText("Click the game to start!", app.graphics.WIDTH / 2, app.graphics.HEIGHT / 2);

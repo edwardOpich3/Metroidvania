@@ -19,10 +19,14 @@ app.player = (function(){
         this.x = 160;
         this.y = app.graphics.HEIGHT / 2;
 
-        this.bbox.x = 20;
+        this.velocity = new app.classes.Vector2();
+
+        this.direction = 1;
+
+        this.bbox.x = 0;
         this.bbox.y = 0;
-        this.bbox.w = 24;
-        this.bbox.h = 64;
+        this.bbox.w = 17;
+        this.bbox.h = 32;
 
         // Init the player's bullet / emitter!
         this.emitter.clearParticles();
@@ -54,16 +58,30 @@ app.player = (function(){
     };
 
     player.draw = function(ctx){
-        if(this.image == undefined){
+        if(this.image == undefined || this.active == false){
             return;
         }
 
-        ctx.drawImage(this.image, this.x, this.y, this.image.width, this.image.height);
+        ctx.save();
+
+        ctx.translate(this.x, this.y);
+
+        if(this.direction < 0)
+        {
+            ctx.translate(this.bbox.w, 0);
+
+            ctx.scale(-1, 1);
+        }
+
+        ctx.drawImage(this.image, 0, 0, this.image.width, this.image.height);
+
+        ctx.restore();
+
         this.emitter.updateAndDraw(ctx, this.emitter.position, app.game.deltaTime);
     };
 
     player.update = function(){
-        if(this.image == undefined){
+        if(this.image == undefined || this.active == false){
             return;
         }
 
@@ -73,6 +91,14 @@ app.player = (function(){
         }
         if (app.userInput.keysDown[app.userInput.KEYBOARD.KEY_D]){
             this.acceleration.x += 0.5;
+        }
+
+        // Mouselook!
+        if(app.userInput.mouse.x < this.x){
+            this.direction = -1;
+        }
+        else{
+            this.direction = 1;
         }
 
         // Jump!
@@ -178,6 +204,8 @@ app.player = (function(){
 
                             app.sound.BGM.pause();
                             app.sound.BGM.currentTime = 0;
+
+                            this.active = false;
                         }
                     }
                 }
@@ -201,6 +229,8 @@ app.player = (function(){
 
                             app.sound.BGM.pause();
                             app.sound.BGM.currentTime = 0;
+
+                            this.active = false;
                         }
                     }
                 }
@@ -239,6 +269,8 @@ app.player = (function(){
 
                             app.sound.BGM.pause();
                             app.sound.BGM.currentTime = 0;
+
+                            this.active = false;
                         }
                     }
                 }
@@ -260,6 +292,8 @@ app.player = (function(){
 
                             app.sound.BGM.pause();
                             app.sound.BGM.currentTime = 0;
+
+                            this.active = false;
                         }
                     }
                 }
@@ -299,6 +333,8 @@ app.player = (function(){
             app.level.load();
 
             this.emitter.clearParticles();
+
+            this.active = false;
         }
 
         else if(this.x + this.bbox.x + this.bbox.w - 1 < 0){
@@ -311,6 +347,8 @@ app.player = (function(){
             app.level.load();
 
             this.emitter.clearParticles();
+
+            this.active = false;
         }
 
         if(this.y + this.bbox.y + 1 >= app.level.tileLayout.length * 32){
@@ -323,6 +361,8 @@ app.player = (function(){
             app.level.load();
 
             this.emitter.clearParticles();
+
+            this.active = false;
         }
 
         else if(this.y + this.bbox.y + this.bbox.h < 0){
@@ -335,6 +375,8 @@ app.player = (function(){
             app.level.load();
 
             this.emitter.clearParticles();
+
+            this.active = false;
         }
     };
 

@@ -1,7 +1,7 @@
 // classes.js
 // This file contains various useful classes.
 // Written by Edward Opich
-// Last modified 3/26/18
+// Last modified 3/30/18
 
 "use strict";
 
@@ -63,6 +63,7 @@ app.classes = (function(){
     // Game Object class
     var GameObject = function(image = undefined, bbox = new BBox()){
         this.position = new Vector2();
+        this.direction = 1; // Greater than 0 is right, less than 0 is left
 
         this.bbox = bbox;   // BBox origin is relative to object position
         this.image = image;
@@ -75,6 +76,7 @@ app.classes = (function(){
         this.gravity = new Vector2(0, 1);
         this.friction = -0.3;
 
+        this.active = true;
         this.grounded = false;
 
         this.init = function(){};

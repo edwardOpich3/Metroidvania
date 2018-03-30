@@ -33,7 +33,6 @@ app.main = {
         this.game.update();
         this.userInput.update();
 
-        // Don't draw if nothing's loaded yet!
         this.graphics.draw();
     },
 

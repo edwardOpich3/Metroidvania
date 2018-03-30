@@ -1,7 +1,7 @@
 // level.js
 // Used for loading rooms from external data.
 // Written by Edward Opich
-// Last modified 3/29/18
+// Last modified 3/30/18
 
 "use strict";
 
@@ -32,8 +32,8 @@ app.level = (function(){
     // x means non-existent; Block the player off.
     var x = undefined;
     level.world = [
-        [0, 1],
-        [2, x]
+        [x, 0, 1, 2],
+        [x, x, x, 3]
     ];
 
     level.init = function(){
@@ -42,7 +42,7 @@ app.level = (function(){
         }
 
         this.row = 0;
-        this.col = 0;
+        this.col = 1;
 
         this.load();
         this.loadTileset();
@@ -109,6 +109,8 @@ app.level = (function(){
 
             level.loaded = true;
             console.log("Loaded level");
+
+            app.player.active = true;
         };
 
         // Open a "get" request from url, and make it asynchronous
