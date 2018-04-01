@@ -77,7 +77,6 @@ app.classes = (function(){
         this.friction = -0.3;
 
         this.active = true;
-        this.grounded = false;
 
         this.init = function(){};
         this.update = function(){};

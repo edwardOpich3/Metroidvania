@@ -10,6 +10,11 @@ var app = app || {};
 app.player = (function(){
     var player = new app.classes.GameObject();
 
+    // Player-specific definitions
+    player.arm = undefined;
+    player.grounded = false;
+    player.aimVector = new app.classes.Vector2();
+
     player.emitter = new app.Emitter();
     player.emitter.position = new app.classes.Vector2();
     player.emitter.velocity = new app.classes.Vector2();
@@ -47,10 +52,11 @@ app.player = (function(){
     player.load = function(){
         var transfer = function(images){
             this.image = images[0];
+            this.arm = images[1];
             console.log("loaded player");
         };
 
-        loadImagesWithCallback(["media/player.png"], transfer.bind(this));
+        loadImagesWithCallback(["media/player.png", "media/arm.png"], transfer.bind(this));
     };
 
     player.unload = function(){
@@ -65,15 +71,17 @@ app.player = (function(){
         ctx.save();
 
         ctx.translate(this.x, this.y);
-
         if(this.direction < 0)
         {
             ctx.translate(this.bbox.w, 0);
-
             ctx.scale(-1, 1);
         }
-
         ctx.drawImage(this.image, 0, 0, this.image.width, this.image.height);
+
+        ctx.translate(9, 18);
+        var angle = Math.atan2(this.aimVector.y, this.aimVector.x);
+        ctx.rotate(angle);
+        ctx.drawImage(this.arm, -2, -4, this.arm.width, this.arm.height);
 
         ctx.restore();
 
@@ -93,14 +101,6 @@ app.player = (function(){
             this.acceleration.x += 0.5;
         }
 
-        // Mouselook!
-        if(app.userInput.mouse.x < this.x){
-            this.direction = -1;
-        }
-        else{
-            this.direction = 1;
-        }
-
         // Jump!
         if(app.userInput.keysPressed[app.userInput.KEYBOARD.KEY_W]){
             if(this.grounded){
@@ -110,15 +110,17 @@ app.player = (function(){
             }
         }
 
+        // Update the aim vector!
+        this.aimVector.x = app.userInput.mouse.x - (this.x + this.bbox.x + (this.bbox.w / 2));
+        this.aimVector.y = app.userInput.mouse.y - (this.y + this.bbox.y + (this.bbox.h / 2))
+
         // Shoot!
         if(app.userInput.mouseDown){
-            this.emitter.velocity.x = app.userInput.mouse.x - (this.x + this.bbox.x + (this.bbox.w / 2));
-            this.emitter.velocity.y = app.userInput.mouse.y - (this.y + this.bbox.y + (this.bbox.h / 2));
+            this.emitter.velocity.x = this.aimVector.x;
+            this.emitter.velocity.y = this.aimVector.y;
 
-            var magnitude = this.emitter.velocity.magnitude();
-
-            this.emitter.velocity.x /= (magnitude / this.emitter.movementSpeed);
-            this.emitter.velocity.y /= (magnitude / this.emitter.movementSpeed);
+            this.emitter.velocity.x /= (this.aimVector.magnitude() / this.emitter.movementSpeed);
+            this.emitter.velocity.y /= (this.aimVector.magnitude() / this.emitter.movementSpeed);
 
             this.emitter.position.x = this.x + this.bbox.x + (this.bbox.w / 2);
             this.emitter.position.y = this.y + this.bbox.y + (this.bbox.h / 2);
@@ -129,6 +131,15 @@ app.player = (function(){
             this.emitter.createParticles(this.emitter.position);
 
             app.sound.SFX.shoot.play();
+        }
+
+        // Mouselook!
+        if(this.aimVector.x < 0){
+            this.direction = -1;
+            this.aimVector.x = -this.aimVector.x;
+        }
+        else{
+            this.direction = 1;
         }
 
         // Calculate physics!
@@ -365,7 +376,7 @@ app.player = (function(){
             this.active = false;
         }
 
-        else if(this.y + this.bbox.y + this.bbox.h < 0){
+        else if(this.y + this.bbox.y + this.bbox.h - 1 < 0){
             this.y = (app.level.tileLayout.length * 32) - (this.bbox.y + 1);
 
             //app.level.unload();

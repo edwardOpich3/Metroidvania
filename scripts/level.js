@@ -32,7 +32,8 @@ app.level = (function(){
     // x means non-existent; Block the player off.
     var x = undefined;
     level.world = [
-        [x, 0, 1, 2],
+        [x, 8, 7, 6, 5],
+        [x, 0, 1, 2, 4],
         [x, x, x, 3]
     ];
 
@@ -41,7 +42,7 @@ app.level = (function(){
             this.unload();
         }
 
-        this.row = 0;
+        this.row = 1;
         this.col = 1;
 
         this.load();
