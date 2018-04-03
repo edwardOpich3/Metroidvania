@@ -1,7 +1,7 @@
 // player.js
 // Contains data having to do with the player; a sub-module of app.game
 // Written by Edward Opich
-// Last modified 3/30/18
+// Last modified 4/3/18
 
 "use strict";
 
@@ -183,12 +183,12 @@ app.player = (function(){
         if(app.level.loaded){
 
             // Which rows of tiles are located at the player's projected top and bottom?
-            var topIndex = Math.floor((this.y + this.bbox.y + this.velocity.y) / 32);
-            var bottomIndex = Math.floor((this.y + this.bbox.y + this.bbox.h + this.velocity.y) / 32);
+            var topIndex = Math.floor((this.y + this.bbox.y + this.velocity.y) / 32) + 1;
+            var bottomIndex = Math.floor((this.y + this.bbox.y + this.bbox.h + this.velocity.y) / 32) + 1;
 
             // Detect ceilings and floors!
-            for(var i = Math.floor((this.x + this.bbox.x + this.velocity.x + 1) / 32);
-            i < Math.floor((this.x + this.bbox.x + this.bbox.w + this.velocity.x - 1) / 32) + 1;
+            for(var i = Math.floor((this.x + this.bbox.x + this.velocity.x + 1) / 32) + 1;
+            i < Math.floor((this.x + this.bbox.x + this.bbox.w + this.velocity.x - 1) / 32) + 2;
             i++){
                 // Make sure we don't check out-of-bounds!
                 if(i < 0){
@@ -207,33 +207,23 @@ app.player = (function(){
                             this.acceleration.y = 0;
                         }
 
-                        this.y = ((topIndex + 1) * 32) + (this.bbox.y);
+                        this.y = (topIndex * 32) + (this.bbox.y);
 
                         // We hit a spike!
-                        if(app.level.tileLayout[topIndex][i] == 2){
+                        /*if(app.level.tileLayout[topIndex][i] == 2){
                             app.game.gameState = app.game.GAME_STATE.GAME_OVER;
 
                             app.sound.BGM.pause();
                             app.sound.BGM.currentTime = 0;
 
                             this.active = false;
-                        }
+                        }*/
                     }
                 }
 
                 // Floors
                 if(this.velocity.y > 0 && bottomIndex >= 0 && bottomIndex < app.level.tileLayout.length){
                     if(app.level.tileLayout[bottomIndex][i] != 0){
-                        this.velocity.y = 0;
-
-                        if(this.acceleration.y > 0){
-                            this.acceleration.y = 0;
-                        }
-
-                        this.y = (bottomIndex * 32) - (this.bbox.y + this.bbox.h);
-
-                        this.grounded = true;
-
                         // We hit a spike!
                         if(app.level.tileLayout[bottomIndex][i] == 2){
                             app.game.gameState = app.game.GAME_STATE.GAME_OVER;
@@ -243,17 +233,27 @@ app.player = (function(){
 
                             this.active = false;
                         }
+
+                        this.velocity.y = 0;
+
+                        if(this.acceleration.y > 0){
+                            this.acceleration.y = 0;
+                        }
+
+                        this.y = ((bottomIndex - 1) * 32) - (this.bbox.y + this.bbox.h);
+
+                        this.grounded = true;
                     }
                 }
             }
 
             // Which columns of tiles are located at the player's projected left and right?
-            var leftIndex = Math.floor((this.x + this.bbox.x + this.velocity.x) / 32);
-            var rightIndex = Math.floor((this.x + this.bbox.x + this.bbox.w + this.velocity.x) / 32);
+            var leftIndex = Math.floor((this.x + this.bbox.x + this.velocity.x) / 32) + 1;
+            var rightIndex = Math.floor((this.x + this.bbox.x + this.bbox.w + this.velocity.x) / 32) + 1;
 
             // Detect walls!
-            for(var i = Math.floor((this.y + this.bbox.y + this.velocity.y + 1) / 32);
-            i < Math.floor((this.y + this.bbox.y + this.bbox.h + this.velocity.y - 1) / 32) + 1;
+            for(var i = Math.floor((this.y + this.bbox.y + this.velocity.y + 1) / 32) + 1;
+            i < Math.floor((this.y + this.bbox.y + this.bbox.h + this.velocity.y - 1) / 32) + 2;
             i++){
                 // Make sure we don't check out-of-bounds!
                 if(i < 0){
@@ -272,17 +272,17 @@ app.player = (function(){
                             this.acceleration.x = 0;
                         }
 
-                        this.x = ((leftIndex + 1) * 32) - (this.bbox.x);
+                        this.x = (leftIndex * 32) - (this.bbox.x);
 
                         // We hit a spike!
-                        if(app.level.tileLayout[i][leftIndex] == 2){
+                        /*if(app.level.tileLayout[i][leftIndex] == 2){
                             app.game.gameState = app.game.GAME_STATE.GAME_OVER;
 
                             app.sound.BGM.pause();
                             app.sound.BGM.currentTime = 0;
 
                             this.active = false;
-                        }
+                        }*/
                     }
                 }
 
@@ -295,17 +295,17 @@ app.player = (function(){
                             this.acceleration.x = 0;
                         }
 
-                        this.x = (rightIndex * 32) - (this.bbox.x + this.bbox.w);
+                        this.x = ((rightIndex - 1) * 32) - (this.bbox.x + this.bbox.w);
 
                         // We hit a spike!
-                        if(app.level.tileLayout[i][rightIndex] == 2){
+                        /*if(app.level.tileLayout[i][rightIndex] == 2){
                             app.game.gameState = app.game.GAME_STATE.GAME_OVER;
 
                             app.sound.BGM.pause();
                             app.sound.BGM.currentTime = 0;
 
                             this.active = false;
-                        }
+                        }*/
                     }
                 }
             }
@@ -313,13 +313,13 @@ app.player = (function(){
             // Lastly, did our bullet hit anything?
             // TODO: Fix this hacky garbage!
             if(this.emitter.position.y < 0
-                || this.emitter.position.y >= app.level.tileLayout.length * 32
+                || this.emitter.position.y >= app.graphics.HEIGHT
                 || this.emitter.position.x < 0
-                || this.emitter.position.x >= app.level.tileLayout[0].length * 32){
+                || this.emitter.position.x >= app.graphics.WIDTH){
                     this.emitter.numParticles = 0;
                 }
 
-            else if(app.level.tileLayout[Math.floor(this.emitter.position.y / 32)][Math.floor(this.emitter.position.x / 32)] != 0){
+            else if(app.level.tileLayout[Math.floor(this.emitter.position.y / 32) + 1][Math.floor(this.emitter.position.x / 32) + 1] != 0){
                 this.emitter.numParticles = 0;
             }
         }
@@ -334,7 +334,7 @@ app.player = (function(){
         this.acceleration = new app.classes.Vector2();
 
         // Detect screen change!
-        if(this.x + this.bbox.x + 1 >= app.level.tileLayout[0].length * 32){
+        if(this.x + this.bbox.x + 1 >= app.graphics.WIDTH){
             this.x = 0 - (this.bbox.x + this.bbox.w - 1);
 
             //app.level.unload();
@@ -349,7 +349,7 @@ app.player = (function(){
         }
 
         else if(this.x + this.bbox.x + this.bbox.w - 1 < 0){
-            this.x = (app.level.tileLayout[0].length * 32) - (this.bbox.x + 1);
+            this.x = app.graphics.WIDTH - (this.bbox.x + 1);
 
             //app.level.unload();
 
@@ -362,7 +362,7 @@ app.player = (function(){
             this.active = false;
         }
 
-        if(this.y + this.bbox.y + 1 >= app.level.tileLayout.length * 32){
+        if(this.y + this.bbox.y + 1 >= app.graphics.HEIGHT){
             this.y = 0 - (this.bbox.y + this.bbox.h - 1);
 
             //app.level.unload();
@@ -377,7 +377,7 @@ app.player = (function(){
         }
 
         else if(this.y + this.bbox.y + this.bbox.h - 1 < 0){
-            this.y = (app.level.tileLayout.length * 32) - (this.bbox.y + 1);
+            this.y = app.graphics.HEIGHT - (this.bbox.y + 1);
 
             //app.level.unload();
 

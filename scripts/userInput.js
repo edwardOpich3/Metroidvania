@@ -1,7 +1,7 @@
 // userInput.js
 // This file contains variables and functions related to user input.
 // Written by Edward Opich
-// Last modified 3/30/18
+// Last modified 4/3/18
 
 "use strict";
 
@@ -37,6 +37,7 @@ app.userInput = (function(){
     userInput.init = function(){
         app.graphics.canvas.addEventListener("mousedown", function(e){
             userInput.mouseDown = true;
+            userInput.mouse = getMouse(e);
         });
 
         app.graphics.canvas.addEventListener("mousemove", function(e){

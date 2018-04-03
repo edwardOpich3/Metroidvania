@@ -1,7 +1,7 @@
 // level.js
 // Used for loading rooms from external data.
 // Written by Edward Opich
-// Last modified 3/30/18
+// Last modified 4/3/18
 
 "use strict";
 
@@ -32,9 +32,9 @@ app.level = (function(){
     // x means non-existent; Block the player off.
     var x = undefined;
     level.world = [
-        [x, 8, 7, 6, 5],
-        [x, 0, 1, 2, 4],
-        [x, x, x, 3]
+        [x,  8,  7,  6,  5,  13],
+        [9,  0,  1,  2,  4,  12],
+        [x,  x,  x,  3,  10, 11]
     ];
 
     level.init = function(){
@@ -62,8 +62,8 @@ app.level = (function(){
                     32 * Math.floor(this.tileLayout[i][j] / (this.tileSet.width / 32)),  // Source Y
                     32,                                                         // Source W
                     32,                                                         // Source H
-                    j * 32,                                                     // Dest X
-                    i * 32,                                                     // Dest Y
+                    (j - 1) * 32,                                                     // Dest X
+                    (i - 1) * 32,                                                     // Dest Y
                     32,                                                         // Dest W
                     32);                                                        // Dest H
 
