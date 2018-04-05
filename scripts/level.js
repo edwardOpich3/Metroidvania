@@ -1,7 +1,7 @@
 // level.js
 // Used for loading rooms from external data.
 // Written by Edward Opich
-// Last modified 4/3/18
+// Last modified 4/5/18
 
 "use strict";
 
@@ -12,27 +12,31 @@ app.level = (function(){
         tileLayout: [],
         tileSet: undefined,
 
+        bg: undefined,
+        overlay: undefined,
+        fg: undefined,
+
         loaded: false,
 
         world: [],
-        row: 0,
-        col: 0,
+        row: undefined,
+        col: undefined,
 
         init: function(){},
         draw: function(){},
 
         load: function(){},
-        loadTileset: function(){},
+        loadGraphics: function(){},
 
         unload: function(){},
-        unloadTileset: function(){}
+        unloadGraphics: function(){}
     };
 
     // The world map. Contains the names of the file to load.
     // x means non-existent; Block the player off.
     var x = undefined;
     level.world = [
-        [x,  8,  7,  6,  5,  13],
+        [14, 8,  7,  6,  5,  13],
         [9,  0,  1,  2,  4,  12],
         [x,  x,  x,  3,  10, 11]
     ];
@@ -46,51 +50,74 @@ app.level = (function(){
         this.col = 1;
 
         this.load();
-        this.loadTileset();
+        //this.loadGraphics();
     };
 
     level.draw = function(ctx){
-        if(this.loaded == false){
+        if(this.loaded == false || this.fg == undefined || this.overlay == undefined){
             return;
         }
 
-        for(var i = 0; i < this.tileLayout.length; i++){
-            for(var j = 0; j < this.tileLayout[i].length; j++){
+        /*if(this.fg == undefined || this.overlay == undefined){
+            if(this.tileSet != undefined){
+                for(var i = 0; i < this.tileLayout.length; i++){
+                    for(var j = 0; j < this.tileLayout[i].length; j++){
 
-                ctx.drawImage(this.tileSet,                                     // Image
-                    (this.tileLayout[i][j] * 32) % this.tileSet.width,               // Source X
-                    32 * Math.floor(this.tileLayout[i][j] / (this.tileSet.width / 32)),  // Source Y
-                    32,                                                         // Source W
-                    32,                                                         // Source H
-                    (j - 1) * 32,                                                     // Dest X
-                    (i - 1) * 32,                                                     // Dest Y
-                    32,                                                         // Dest W
-                    32);                                                        // Dest H
+                        ctx.drawImage(this.tileSet,                                     // Image
+                            (this.tileLayout[i][j] * 32) % this.tileSet.width,               // Source X
+                            32 * Math.floor(this.tileLayout[i][j] / (this.tileSet.width / 32)),  // Source Y
+                            32,                                                         // Source W
+                            32,                                                         // Source H
+                            (j - 1) * 32,                                                     // Dest X
+                            (i - 1) * 32,                                                     // Dest Y
+                            32,                                                         // Dest W
+                            32);                                                        // Dest H
 
+                    }
+                }
             }
+        }*/
+
+        else{
+            ctx.drawImage(this.fg, 0, 0);
         }
     };
 
-    level.loadTileset = function(){
+    level.loadGraphics = function(){
         var transfer = function(images){
             this.tileSet = images[0];
             console.log("loaded tile set");
+
+            this.bg = images[1];
+            this.overlay = images[2];
+            this.fg = images[3];
         };
 
-        loadImagesWithCallback(["media/tileSet.png"], transfer.bind(this));
+        var bgFile = "media/bg/" + this.world[this.row][this.col] + ".png";
+        var overlayFile = "media/overlay/" + this.world[this.row][this.col] + ".png";
+        var fgFile = "media/fg/" + this.world[this.row][this.col] + ".png";
+        loadImagesWithCallback(["media/tileSet.png", bgFile, overlayFile, fgFile], transfer.bind(this));
+        //loadImagesWithCallback(["media/tileSet.png"], transfer.bind(this));
     };
 
-    level.unloadTileset = function(){
+    level.unloadGraphics = function(){
         // TODO: Figure out how to unload images!
+        this.bg = undefined;
+        this.overlay = undefined;
+        this.fg = undefined;
     };
     
     // Make a request for a new tile layout
     level.load = function(){
+
         // Make a request object!
         var xhr = new XMLHttpRequest();
 
         // Do the onload function once the request has been completed!
         xhr.onload = function(){
+            level.unloadGraphics();
+            level.loadGraphics();
+
             var response = xhr.responseText;
 
             // Split the data into rows via line-breaks
@@ -126,6 +153,7 @@ app.level = (function(){
 
     level.unload = function(){
         this.loaded = false;
+        this.unloadGraphics();
     };
 
     return Object.seal(level);

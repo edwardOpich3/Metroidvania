@@ -1,7 +1,7 @@
 // player.js
 // Contains data having to do with the player; a sub-module of app.game
 // Written by Edward Opich
-// Last modified 4/3/18
+// Last modified 4/5/18
 
 "use strict";
 
@@ -218,6 +218,15 @@ app.player = (function(){
 
                             this.active = false;
                         }*/
+
+                        if(app.level.tileLayout[topIndex][i] == 3){
+                            app.game.gameState = app.game.GAME_STATE.WIN;
+
+                            app.sound.BGM.pause();
+                            app.sound.BGM.currentTime = 0;
+
+                            this.active = false;
+                        }
                     }
                 }
 
@@ -227,6 +236,16 @@ app.player = (function(){
                         // We hit a spike!
                         if(app.level.tileLayout[bottomIndex][i] == 2){
                             app.game.gameState = app.game.GAME_STATE.GAME_OVER;
+
+                            app.sound.BGM.pause();
+                            app.sound.BGM.currentTime = 0;
+
+                            this.active = false;
+                        }
+
+                        // We hit the goal!
+                        else if(app.level.tileLayout[bottomIndex][i] == 3){
+                            app.game.gameState = app.game.GAME_STATE.WIN;
 
                             app.sound.BGM.pause();
                             app.sound.BGM.currentTime = 0;
@@ -283,6 +302,16 @@ app.player = (function(){
 
                             this.active = false;
                         }*/
+
+                        // We hit the goal!
+                        if(app.level.tileLayout[i][leftIndex] == 3){
+                            app.game.gameState = app.game.GAME_STATE.WIN;
+
+                            app.sound.BGM.pause();
+                            app.sound.BGM.currentTime = 0;
+
+                            this.active = false;
+                        }
                     }
                 }
 
@@ -306,6 +335,16 @@ app.player = (function(){
 
                             this.active = false;
                         }*/
+
+                        // We hit the goal!
+                        if(app.level.tileLayout[i][rightIndex] == 3){
+                            app.game.gameState = app.game.GAME_STATE.WIN;
+
+                            app.sound.BGM.pause();
+                            app.sound.BGM.currentTime = 0;
+
+                            this.active = false;
+                        }
                     }
                 }
             }
