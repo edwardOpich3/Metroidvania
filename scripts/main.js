@@ -1,7 +1,7 @@
 // main.js
 // This file contains the outer-most structure of the application.
 // Written by Edward Opich
-// Last modified 3/30/18
+// Last modified 4/6/18
 
 "use strict";
 
@@ -50,7 +50,7 @@ app.main = {
             this.sound.BGM.pause();
         }
 
-        console.log("game unfocused");
+        //console.log("game unfocused");
     },
 
     refocusGame: function(){
@@ -67,6 +67,6 @@ app.main = {
             this.sound.BGM.play();
         }
 
-        console.log("game refocused");
+        //console.log("game refocused");
     },
 };

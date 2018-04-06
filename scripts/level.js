@@ -1,7 +1,7 @@
 // level.js
 // Used for loading rooms from external data.
 // Written by Edward Opich
-// Last modified 4/5/18
+// Last modified 4/6/18
 
 "use strict";
 
@@ -78,15 +78,15 @@ app.level = (function(){
             }
         }*/
 
-        else{
+        //else{
             ctx.drawImage(this.fg, 0, 0);
-        }
+        //}
     };
 
     level.loadGraphics = function(){
         var transfer = function(images){
             this.tileSet = images[0];
-            console.log("loaded tile set");
+            //console.log("loaded tile set");
 
             this.bg = images[1];
             this.overlay = images[2];
@@ -136,7 +136,7 @@ app.level = (function(){
             }
 
             level.loaded = true;
-            console.log("Loaded level");
+            //console.log("Loaded level");
 
             app.player.active = true;
         };

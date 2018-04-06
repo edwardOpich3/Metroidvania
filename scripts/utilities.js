@@ -1,6 +1,6 @@
 // utilities.js
 // global utilities to be used in the project
-// Modified 3/26/18
+// Modified 4/6/18
 
 // All of these functions are in the global scope
 		
@@ -19,15 +19,15 @@ function getRandom(min, max) {
 }
 
 
-function makeColor(red, green, blue, alpha){
+/*function makeColor(red, green, blue, alpha){
 	var color='rgba('+red+','+green+','+blue+', '+alpha+')';
 	return color;
-}
+}*/
 
 // Function Name: getRandomColor()
 // returns a random color of alpha 1.0
 // http://paulirish.com/2009/random-hex-color-code-snippets/
-function getRandomColor(){
+/*function getRandomColor(){
 	var red = Math.round(Math.random()*200+55);
 	var green = Math.round(Math.random()*200+55);
 	var blue=Math.round(Math.random()*200+55);
@@ -35,9 +35,9 @@ function getRandomColor(){
 	// OR	if you want to change alpha
 	// var color='rgba('+red+','+green+','+blue+',0.50)'; // 0.50
 	return color;
-}
+}*/
 
-function getRandomUnitVector(){
+/*function getRandomUnitVector(){
 	var x = getRandom(-1,1);
 	var y = getRandom(-1,1);
 	var length = Math.sqrt(x*x + y*y);
@@ -51,15 +51,15 @@ function getRandomUnitVector(){
 	}
 	
 	return {x:x, y:y};
-}
+}*/
 
-function simplePreload(imageArray){
+/*function simplePreload(imageArray){
 	// loads images all at once
 	for (var i = 0; i < imageArray.length; i++) {
 		var img = new Image();
 		img.src = imageArray[i];
 	}
-}
+}*/
 
 
 function loadImagesWithCallback(sources, callback) {
@@ -71,7 +71,7 @@ function loadImagesWithCallback(sources, callback) {
 	  imageObjects[i] = new Image();
 	  imageObjects[i].onload = function() {
 	  	numLoadedImages++;
-	  	console.log("loaded image at '" + this.src + "'")
+	  	//console.log("loaded image at '" + this.src + "'")
 		if(numLoadedImages >= numImages) {
 		  callback(imageObjects); // send the images back
 		}
@@ -95,7 +95,7 @@ function clamp(val, min, max){
 
 
  // FULL SCREEN MODE
-function requestFullscreen(element) {
+/*function requestFullscreen(element) {
 	if (element.requestFullscreen) {
 	  element.requestFullscreen();
 	} else if (element.mozRequestFullscreen) {
@@ -106,11 +106,11 @@ function requestFullscreen(element) {
 	  element.webkitRequestFullscreen();
 	}
 	// .. and do nothing if the method is not supported
-};
+};*/
 
 // This gives Array a randomElement() method
-Array.prototype.randomElement = function(){
+/*Array.prototype.randomElement = function(){
 	return this[Math.floor(Math.random() * this.length)];
-}
+}*/
 
 

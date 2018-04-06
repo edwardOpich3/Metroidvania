@@ -1,7 +1,7 @@
 // player.js
 // Contains data having to do with the player; a sub-module of app.game
 // Written by Edward Opich
-// Last modified 4/5/18
+// Last modified 4/6/18
 
 "use strict";
 
@@ -53,7 +53,7 @@ app.player = (function(){
         var transfer = function(images){
             this.image = images[0];
             this.arm = images[1];
-            console.log("loaded player");
+            //console.log("loaded player");
         };
 
         loadImagesWithCallback(["media/player.png", "media/arm.png"], transfer.bind(this));
@@ -364,9 +364,13 @@ app.player = (function(){
         }
 
         // Add our velocity to our position
+        //this.velocity.x *= (app.game.deltaTime * 1);
+        //this.velocity.y *= (app.game.deltaTime * 1);
         this.position.add(this.velocity);
 
         // Update our emitter's position!
+        //this.emitter.velocity.x *= (app.game.deltaTime * 1);
+        //this.emitter.velocity.y *= (app.game.deltaTime * 1);
         this.emitter.position.add(this.emitter.velocity);
 
         // Set our acceleration to 0!

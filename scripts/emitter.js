@@ -1,14 +1,14 @@
 // emitter.js
 // Used for particle effects!
 // Written by Edward Opich
-// Last modified 3/26/18
+// Last modified 4/6/18
 
 "use strict";
 var app = app || {};
 
 // TODO: Merge this into classes.js?
 app.Emitter = (function(){
-    console.log("emitter.js module loaded");
+    //console.log("emitter.js module loaded");
 
     function Emitter(){
         // public
